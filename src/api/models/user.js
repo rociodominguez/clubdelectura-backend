@@ -6,10 +6,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     rol: { type: String, required: true, default: "user", enum: ["admin", "user"]},
-    favs: {
-        books: [{ type: mongoose.Types.ObjectId, ref: "Book" }],
-        movies: [{ type: mongoose.Types.ObjectId, ref: "Movie" }]
-    }
+    favs: [{ type: mongoose.Types.ObjectId, required: false, ref: "books" }]
 }, {
     timestamps: true,
     collection: "users"
@@ -17,7 +14,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", function () {
     this.password = bcrypt.hashSync(this.password, 10);
-})
+});
 
 const User = mongoose.model("User", userSchema, "users");
 module.exports = User;

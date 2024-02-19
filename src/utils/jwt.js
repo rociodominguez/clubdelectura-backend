@@ -4,4 +4,8 @@ const generateKey = (id) => {
     return jwt.sign({ id }, process.env.SECRET_KEY, {expiresIn: "30d"})
 }
 
-module.exports = generateKey;
+const verifyKey = (token) => {
+    return jwt.verify(token, process.env.SECRET_KEY)
+}
+
+module.exports = { generateKey, verifyKey }
