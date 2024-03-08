@@ -3,11 +3,12 @@ const { getUsers, getUsersById, login, updateUser, deleteUser, register } = requ
 
 const userRouter = require("express").Router();
 
+userRouter.post("/register", register);
+userRouter.post("/login", login);
 userRouter.get("/:id", getUsersById);
 userRouter.put("/:id", [isAuth], updateUser);
 userRouter.delete("/:id", deleteUser);
-userRouter.post("/register", register);
-userRouter.post("/login", login);
 userRouter.get("/", getUsers);
 
 module.exports = userRouter;
+

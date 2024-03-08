@@ -4,12 +4,6 @@ const postBook = async (req, res, next) => {
     try {
         const newBook = new Book(req.body);
 
-        // if(req.user.rol === "admin") {
-        //     newBook.verified = true;
-        // } else {
-        //     newBook.verified = false;
-        // }
-
         const bookSaved = await newBook.save();
         return res.status(200).json(bookSaved);
     } catch (error) {
@@ -41,8 +35,8 @@ const updateBook = async (req, res, next) => {
         const { id } = req.params;
         const newBook = req.body;
         delete newBook._id;
-        const bookUpdated = await Book.findByIdAndUpdate(id, newBook, { new: true });
-        return res.status(200).json(bookUpdated);
+        const updatedBook = await Book.findByIdAndUpdate(id, newBook, { new: true });
+        return res.status(200).json(updatedBook);
     } catch (error) {
         return res.status(400).json("Error en PUT");
     }
@@ -51,11 +45,32 @@ const updateBook = async (req, res, next) => {
 const deleteBook = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const bookDeleted = await Book.findByIdAndDelete(id);
-        return res.status(200).json(bookDeleted);
+        const deletedBook = await Book.findByIdAndDelete(id);
+        return res.status(200).json(deletedBook);
     } catch (error) {
         return res.status(400).json("Error en DELETE");
     }
 };
 
-module.exports = { getBooks, getBookById, postBook, updateBook, deleteBook };
+const rateBook = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { rating } = req.body;
+  
+      if (rating < 0 || rating > 5) {
+        return res.status(400).json("La puntuación debe estar entre 0 y 5");
+      }
+  
+      const updatedBook = await Book.findByIdAndUpdate(
+        id,
+        { $push: { ratings: { user: req.user._id, rating: rating } } },
+        { new: true }
+      );
+  
+      return res.status(200).json(updatedBook);
+    } catch (error) {
+      return res.status(400).json("Error al puntuar el libro");
+    }
+  };
+
+module.exports = { getBooks, getBookById, postBook, updateBook, deleteBook, rateBook };

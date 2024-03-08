@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt');
 const User = require("../models/user");
-const generateKey = require('../../utils/jwt');
+const { generateKey } = require("../../utils/jwt")
 
 const register = async (req, res, next) => {
     try {
         const duplicatedUser = await User.findOne({ userName: req.body.userName });
 
         if (duplicatedUser) {
-            return res.status(400).json({ error: "Nombre de usuario ya existente" });
+            return res.status(400).json("Nombre de usuario ya existente");
         }
 
         const newUser = new User({
@@ -59,7 +59,7 @@ const deleteUser = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
     try {
-        const users = await User.find();
+        const users = await User.find().populate("favs");
         return res.status(200).json(users);
     } catch (error) {
         return res.status(400).json("Error al obtener usuarios");
@@ -69,7 +69,7 @@ const getUsers = async (req, res, next) => {
 const getUsersById = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const user = await User.findById(id);
+        const user = await User.findById(id).populate("favs");
 
         if (!user) {
             return res.status(404).json("Usuario no encontrado");

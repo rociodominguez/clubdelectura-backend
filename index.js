@@ -1,6 +1,7 @@
 const bookRouter = require("./src/api/routes/book");
 const userRouter = require("./src/api/routes/user");
 const { connectDB } = require("./src/config/db");
+const cors = require("cors");
 require("dotenv").config();
 const express = require("express");
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 connectDB();
 
+app.use(cors());
 app.use("/api/v1/books", bookRouter);
 app.use("/api/v1/users", userRouter);
 
