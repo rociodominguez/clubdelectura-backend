@@ -6,7 +6,10 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     rol: { type: String, required: true, default: "user", enum: ["admin", "user"]},
-    favs: [{ type: mongoose.Types.ObjectId, required: false, ref: "books" }]
+    hasVoted: {
+        type: Boolean,
+        default: false,
+      },
 }, {
     timestamps: true,
     collection: "users"

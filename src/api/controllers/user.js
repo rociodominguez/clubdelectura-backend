@@ -105,4 +105,21 @@ const updateUser = async (req, res, next) => {
     }
   };
 
-module.exports = { login, register, deleteUser, getUsers, getUsersById, updateUser };
+  const votesUser = async (userId, hasVoted) => {
+    try {
+      const user = await User.findById(userId);
+  
+      if (!user) {
+        throw new Error("Usuario no encontrado.");
+      }
+  
+      user.hasVoted = hasVoted;
+      await user.save();
+  
+      return user;
+    } catch (error) {
+      console.error(`Error en el voto del usuario: ${error.message}`);
+    }
+  };
+
+module.exports = { login, register, deleteUser, getUsers, getUsersById, updateUser, votesUser };

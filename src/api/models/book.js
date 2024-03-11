@@ -11,6 +11,7 @@ const bookSchema = new mongoose.Schema({
       rating: { type: Number, required: true, min: 0, max: 5 },
     },
   ],
+  readingStatus: { type: String, enum: ["actual", "acabada"], default: "acabada" },
 }, {
   timestamps: true,
   collection: "books",

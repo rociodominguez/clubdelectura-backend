@@ -58,7 +58,7 @@ const rateBook = async (req, res, next) => {
       const { rating } = req.body;
   
       if (rating < 0 || rating > 5) {
-        return res.status(400).json("La puntuación debe estar entre 0 y 5");
+        return res.status(400).json("La puntuación debe ser entre 0 y 5");
       }
   
       const updatedBook = await Book.findByIdAndUpdate(
