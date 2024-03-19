@@ -6,6 +6,9 @@ const isAuth = async (req, res, next) => {
     const token = req.headers.authorization;
     const parsedToken = token.replace("Bearer ", "");
     const { id } = verifyKey(parsedToken);
+    if (!id) {
+      return res.status(401).json({ error: "Token no válido" });
+    }
     const user = await User.findById(id);
 
     if (!user) {

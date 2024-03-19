@@ -5,13 +5,13 @@ const surveyResults = async (req, res) => {
   try {
     const surveyData = req.body;
 
-    const user = await User.findById(req.user._id);
-    user.hasVoted = true;
-    await user.save();
+    const user = await User.findByIdAndUpdate(req.user._id, { hasVoted: true });
 
     const newSurveyResult = new SurveyResult({
+      user: user._id,
       selectedBook: surveyData.selectedBook,
     });
+    
 
     const savedResult = await newSurveyResult.save();
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const surveyRouter = express.Router();
-const { surveyResults } = require('../controllers/survey');
-const { isAuth } = require('../../middlewares/auth');
+const { isAuth } = require("../../middlewares/auth");
+const { surveyResults, getSurveyResults } = require('../controllers/survey');
 
 surveyRouter.post('/survey', [isAuth], surveyResults);
 
